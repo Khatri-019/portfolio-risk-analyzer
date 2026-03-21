@@ -6,6 +6,7 @@ from pydantic import BaseModel
 class AnalyticsResponse(BaseModel):
     stocks: dict
     portfolio_summary: dict
+    portfolio_history: list[dict]
     skipped_tickers: list[str]
 
 

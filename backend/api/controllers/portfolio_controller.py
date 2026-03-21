@@ -7,7 +7,11 @@ from fastapi import HTTPException
 
 from api.models.requests import BenchmarkRequest, PortfolioRequest
 from api.models.responses import AnalyticsResponse, BenchmarkResponse
-from src.portfolio_analytics import compute_analytics, compute_benchmark_comparison, compute_portfolio_history
+from src.portfolio_analytics import (
+    compute_analytics,
+    compute_benchmark_comparison,
+    compute_portfolio_history,
+)
 from src.portfolio_fetcher import fetch_portfolio
 
 _STRIP_KEYS = {"historical_prices", "daily_returns"}
@@ -43,9 +47,15 @@ async def analyse(request: PortfolioRequest) -> AnalyticsResponse:
             ticker: _serialise_stock(data)
             for ticker, data in analytics["stocks"].items()
         }
+        portfolio_history = compute_portfolio_history(portfolio_data)
+        history_records = [
+            {"date": str(date.date()), "value": float(value)}
+            for date, value in portfolio_history.items()
+        ]
         return AnalyticsResponse(
             stocks=serialised_stocks,
             portfolio_summary=analytics["portfolio_summary"],
+            portfolio_history=history_records,
             skipped_tickers=skipped_tickers,
         )
     except HTTPException:
