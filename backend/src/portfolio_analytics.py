@@ -180,6 +180,10 @@ def compute_benchmark_comparison(
         name=benchmark_ticker,
     ).dropna()
 
+    # Deduplicate date index — NSE data sometimes has duplicate timestamps
+    benchmark_prices = benchmark_prices[~benchmark_prices.index.duplicated(keep="last")]
+    portfolio_history = portfolio_history[~portfolio_history.index.duplicated(keep="last")]
+
     # Normalise both indexes to timezone-naive dates for alignment
     portfolio_index = portfolio_history.index.normalize().tz_localize(None)
     benchmark_index = benchmark_prices.index.normalize().tz_localize(None)

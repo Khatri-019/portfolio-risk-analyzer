@@ -1,8 +1,11 @@
 """Business logic orchestration for portfolio fetch and benchmark endpoints."""
 
+import logging
 import math
 
 import numpy as np
+
+logger = logging.getLogger(__name__)
 from fastapi import HTTPException
 
 from api.models.requests import BenchmarkRequest, PortfolioRequest
@@ -77,21 +80,21 @@ async def benchmark(request: BenchmarkRequest) -> BenchmarkResponse:
                 detail="No valid tickers — all were skipped",
             )
         portfolio_history = compute_portfolio_history(portfolio_data)
-        comparison_df, raw_beta = compute_benchmark_comparison(
-            portfolio_history, request.benchmark_ticker
-        )
-
-        # Fix 2: serialise DatetimeIndex to ISO date strings before converting to records
-        if not comparison_df.empty:
+        try:
+            comparison_df, raw_beta = compute_benchmark_comparison(
+                portfolio_history, request.benchmark_ticker
+            )
+            if comparison_df.empty:
+                return BenchmarkResponse(comparison=[], beta=None)
             comparison_df.index = comparison_df.index.strftime("%Y-%m-%d")
-            records = comparison_df.reset_index().to_dict(orient="records")
-        else:
-            records = []
-
-        # Fix 4: JSON does not support NaN — map to None
-        beta = None if (raw_beta is None or math.isnan(raw_beta)) else float(raw_beta)
-
-        return BenchmarkResponse(comparison=records, beta=beta)
+            history_list = comparison_df.reset_index().rename(
+                columns={"index": "date"}
+            ).to_dict(orient="records")
+            beta = None if (raw_beta is None or math.isnan(raw_beta)) else float(raw_beta)
+            return BenchmarkResponse(comparison=history_list, beta=beta)
+        except Exception as e:
+            logger.warning(f"Benchmark failed: {e}")
+            return BenchmarkResponse(comparison=[], beta=None)
     except HTTPException:
         raise
     except ValueError as e:

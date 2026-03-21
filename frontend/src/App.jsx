@@ -4,6 +4,7 @@ import { useAnalytics } from './hooks/usePortfolio'
 import Layout from './components/layout/Layout'
 import OverviewPage from './pages/OverviewPage'
 import HoldingsPage from './pages/HoldingsPage'
+import RiskPage from './pages/RiskPage'
 
 
 const PAGE_NAMES = {
@@ -43,6 +44,9 @@ function AppInner() {
       break
     case 'holdings':
       page = <HoldingsPage analyticsData={analytics} />
+      break
+    case 'risk':
+      page = <RiskPage portfolio={portfolio} analyticsData={analytics} />
       break
     default:
       page = (
