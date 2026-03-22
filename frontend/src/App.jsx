@@ -6,6 +6,8 @@ import OverviewPage from './pages/OverviewPage'
 import HoldingsPage from './pages/HoldingsPage'
 import RiskPage from './pages/RiskPage'
 import SimulationPage from './pages/SimulationPage'
+import RebalancerPage from './pages/RebalancerPage'
+import InsightsPage from './pages/InsightsPage'
 
 
 const PAGE_NAMES = {
@@ -51,6 +53,12 @@ function AppInner() {
       break
     case 'simulation':
       page = <SimulationPage portfolio={portfolio} />
+      break
+    case 'rebalancer':
+      page = <RebalancerPage portfolio={portfolio} analyticsData={analytics} />
+      break
+    case 'insights':
+      page = <InsightsPage analytics={analytics} portfolio={portfolio} />
       break
     default:
       page = (
