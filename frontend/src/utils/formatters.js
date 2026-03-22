@@ -1,12 +1,13 @@
 export const formatCurrency = (value, symbol = '$') => {
-  if (value === null || value === undefined) return 'N/A'
-  const formatted = Math.abs(value).toLocaleString('en-US', {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  })
-  const decPart = formatted.split('.')[1] || ''
-  return `${value < 0 ? '-' : ''}${symbol}${formatted}.${decPart}`
-}
+     if (value === null || value === undefined) return 'N/A'
+     const num = Number(value)
+     if (isNaN(num)) return 'N/A'
+     const formatted = Math.abs(num).toLocaleString('en-US', {
+       minimumFractionDigits: 2,
+       maximumFractionDigits: 2,
+     })
+     return `${num < 0 ? '-' : ''}${symbol}${formatted}`
+   }
 
 export const formatCompact = (value, symbol = '$') => {
   // Compact formatting for large numbers in tight spaces
