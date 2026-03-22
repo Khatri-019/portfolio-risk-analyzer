@@ -1,27 +1,20 @@
-import sys, os
+import sys
 sys.path.insert(0, '.')
-import certifi
-os.environ['SSL_CERT_FILE'] = certifi.where()
-os.environ['REQUESTS_CA_BUNDLE'] = certifi.where()
+from src.portfolio_fetcher import fetch_portfolio
+from src.portfolio_analytics import compute_portfolio_history
 
-from dotenv import load_dotenv
-load_dotenv(dotenv_path='.env')
+data, skipped = fetch_portfolio([
+    {"ticker": "AAPL", "quantity": 10, "buy_price": 150.0},
+    {"ticker": "MSFT", "quantity": 8,  "buy_price": 280.0},
+    {"ticker": "NVDA", "quantity": 4,  "buy_price": 450.0},
+])
 
-from src.sentiment import analyse_portfolio_sentiment
-
-news_api_key = os.environ.get("NEWS_API_KEY", "")
-
-result = analyse_portfolio_sentiment(
-    {
-        "AAPL": "Apple Inc",
-        "MSFT": "Microsoft",
-        "NVDA": "NVIDIA",
-    },
-    news_api_key
-)
-
-print(f"Portfolio Sentiment : {result['portfolio_sentiment']}")
-print(f"Summary             : {result['summary']}")
-print()
-for ticker, data in result['ticker_sentiments'].items():
-    print(f"{ticker:6} | {data['overall_sentiment']:8} | score: {data['sentiment_score']:+.3f} | headlines: {data['headlines_analysed']}")
+history = compute_portfolio_history(data)
+print("Length:", len(history))
+print("Min:", history.min())
+print("Max:", history.max())
+print("Last:", history.iloc[-1])
+print("First 5 values:")
+print(history.head())
+print("Last 5 values:")
+print(history.tail())
