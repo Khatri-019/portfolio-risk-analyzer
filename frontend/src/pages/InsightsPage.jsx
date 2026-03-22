@@ -136,8 +136,15 @@ export default function InsightsPage({ analytics, portfolio }) {
     setSentimentLoading(true)
     setSentimentError(null)
     try {
+      const COMPANY_NAMES = {
+        AAPL: 'Apple', MSFT: 'Microsoft', GOOGL: 'Google',
+        AMZN: 'Amazon', TSLA: 'Tesla', NVDA: 'NVIDIA',
+        META: 'Meta Facebook', JPM: 'JPMorgan Chase',
+        GS: 'Goldman Sachs', MS: 'Morgan Stanley',
+        NFLX: 'Netflix', AMD: 'AMD semiconductor',
+      }
       const tickers_and_names = portfolio.reduce(
-        (acc, h) => ({ ...acc, [h.ticker]: h.ticker }),
+        (acc, h) => ({ ...acc, [h.ticker]: COMPANY_NAMES[h.ticker] || h.ticker }),
         {}
       )
       const result = await fetchSentiment(tickers_and_names)
@@ -198,18 +205,23 @@ export default function InsightsPage({ analytics, portfolio }) {
         {!reportLoading && healthData && (
           <div>
             {/* Header: title + score circle */}
-            <div className="flex justify-between items-center mb-4">
-              <span className="font-semibold text-base text-primary">Portfolio Health Report</span>
-              <div className="flex flex-col items-center">
+            <div className="flex items-center justify-between mb-4">
+              <div>
+                <h3 className="font-semibold text-base text-primary">
+                  Portfolio Health Report
+                </h3>
+                <Badge variant={color} label={healthData.health_label} />
+              </div>
+              <div className="text-center">
                 <div
                   className={clsx(
-                    'w-20 h-20 rounded-full border-4 flex items-center justify-center font-bold text-2xl mx-auto mb-1',
+                    'w-16 h-16 rounded-full border-4 flex items-center justify-center font-bold text-xl',
                     SCORE_BADGE_CLASS[color]
                   )}
                 >
                   {healthData.health_score}
                 </div>
-                <span className="text-xs text-text-secondary">{healthData.health_label}</span>
+                <p className="text-text-secondary text-[10px] mt-1">{healthData.health_label}</p>
               </div>
             </div>
 
@@ -305,6 +317,9 @@ export default function InsightsPage({ analytics, portfolio }) {
               />
               <p className="text-text-secondary text-sm mt-2">
                 {positiveCount}/{totalTickers} holdings show positive sentiment
+              </p>
+              <p className="text-text-secondary text-[10px] text-center mt-1 opacity-60">
+                Note: Headlines sourced from NewsAPI free tier. Results may include general market news.
               </p>
             </div>
 

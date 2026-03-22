@@ -149,8 +149,14 @@ export default function OverviewPage({ analytics, onAnalyse, isLoading, isError,
 
   // ~8 ticks across the history length keeps the X axis readable
   const xTickInterval = Math.max(1, Math.floor(portfolio_history.length / 8))
+  const historyMin = Math.min(...portfolio_history.map(d => d.value))
+  const historyMax = Math.max(...portfolio_history.map(d => d.value))
+
+  const yDomainMin = Math.floor(historyMin * 0.95)
+  const yDomainMax = Math.ceil(historyMax * 1.05)
 
   return (
+    
     <div className="space-y-6">
 
       {/* ── Row 1: portfolio-level metric cards ───────────────────────── */}
@@ -259,6 +265,7 @@ export default function OverviewPage({ analytics, onAnalyse, isLoading, isError,
           <SectionLabel>Portfolio Value</SectionLabel>
           <ResponsiveContainer width="100%" height={220}>
             <AreaChart
+              key={`history-${yDomainMin}-${yDomainMax}`}
               data={portfolio_history}
               margin={{ top: 8, right: 72, bottom: 0, left: 0 }}
             >
@@ -283,6 +290,7 @@ export default function OverviewPage({ analytics, onAnalyse, isLoading, isError,
                 axisLine={false}
                 tickLine={false}
                 width={68}
+                domain={[yDomainMin, yDomainMax]}
               />
               <Tooltip
                 contentStyle={TOOLTIP_STYLE}
@@ -292,6 +300,7 @@ export default function OverviewPage({ analytics, onAnalyse, isLoading, isError,
               <ReferenceLine
                 y={total_investment}
                 stroke="#808080"
+                ifOverflow='hidden'
                 strokeDasharray="4 4"
                 label={{
                   value: 'Cost Basis',
@@ -342,7 +351,7 @@ export default function OverviewPage({ analytics, onAnalyse, isLoading, isError,
           </BarChart>
         </ResponsiveContainer>
       </Card>
-
+      
     </div>
   )
 }

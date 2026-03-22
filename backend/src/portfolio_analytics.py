@@ -33,7 +33,7 @@ def compute_portfolio_history(portfolio_data: dict) -> pd.Series:
         value_series.append(ticker_value)
 
     combined: pd.DataFrame = pd.concat(value_series, axis=1)
-    portfolio_history: pd.Series = combined.sum(axis=1)
+    portfolio_history: pd.Series = combined.dropna(how='any').sum(axis=1)
     portfolio_history.name = "portfolio_value"
     return portfolio_history
 

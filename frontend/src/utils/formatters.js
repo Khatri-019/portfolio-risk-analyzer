@@ -1,24 +1,26 @@
-export const formatCurrency = (value, symbol = '₹') => {
+export const formatCurrency = (value, symbol = '$') => {
   if (value === null || value === undefined) return 'N/A'
-  const [intPart, decPart] = Math.abs(value).toFixed(2).split('.')
-  const lastThree = intPart.slice(-3)
-  const rest = intPart.slice(0, -3)
-  const formatted = rest
-    ? rest.replace(/\B(?=(\d{2})+(?!\d))/g, ',') + ',' + lastThree
-    : lastThree
+  const formatted = Math.abs(value).toLocaleString('en-US', {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  })
+  const decPart = formatted.split('.')[1] || ''
   return `${value < 0 ? '-' : ''}${symbol}${formatted}.${decPart}`
 }
 
-export const formatCompact = (value, symbol = '₹') => {
+export const formatCompact = (value, symbol = '$') => {
   // Compact formatting for large numbers in tight spaces
   // 1234567 → ₹12.3L (lakhs)
   // 12345678 → ₹1.2Cr (crores)
   // Used in TopBar where space is limited
   if (value === null || value === undefined) return 'N/A'
   if (Math.abs(value) >= 10000000)
-    return `${symbol}${(value / 10000000).toFixed(1)}Cr`
+    return `${symbol}${(value / 10000000).toFixed(1)}B`
   if (Math.abs(value) >= 100000)
-    return `${symbol}${(value / 100000).toFixed(1)}L`
+    return `${symbol}${(value / 100000).toFixed(1)}M`
+
+  if (Math.abs(value) >= 1000)                           // ← ADD THIS
+    return `${symbol}${(value / 1000).toFixed(1)}K`      // ← ADD THIS
   return formatCurrency(value, symbol)
 }
 

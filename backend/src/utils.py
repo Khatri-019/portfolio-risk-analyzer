@@ -3,7 +3,7 @@
 import math
 
 
-def format_currency(value: float, symbol: str = "₹", indian_format: bool = True) -> str:
+def format_currency(value: float, symbol: str = "$", indian_format: bool = True) -> str:
     """Format a float as a currency string.
 
     When indian_format is True (default), uses Indian lakh/crore grouping (e.g. ₹1,23,456.78).

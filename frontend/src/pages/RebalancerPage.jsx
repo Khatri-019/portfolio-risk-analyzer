@@ -109,9 +109,9 @@ export default function RebalancerPage({ analyticsData, portfolio }) {
 
   const tickers = Object.keys(analyticsData.stocks)
 
-  const sells = rebalanceData?.trades.filter(t => t.action === 'SELL') ?? []
-  const buys  = rebalanceData?.trades.filter(t => t.action === 'BUY')  ?? []
-  const holds = rebalanceData?.trades.filter(t => t.action === 'HOLD') ?? []
+  const sells = rebalanceData?.trades.filter(t => t.action === 'SELL' && Math.abs(t.trade_value) >= 1.0) ?? []
+  const buys  = rebalanceData?.trades.filter(t => t.action === 'BUY'  && Math.abs(t.trade_value) >= 1.0) ?? []
+  const holds = rebalanceData?.trades.filter(t => t.action === 'HOLD' || Math.abs(t.trade_value) < 1.0)  ?? []
 
   return (
     <div className="space-y-6">

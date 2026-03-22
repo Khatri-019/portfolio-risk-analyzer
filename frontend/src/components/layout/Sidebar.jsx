@@ -166,7 +166,7 @@ export default function Sidebar({ onAnalyse, isLoading }) {
                       <div>
                         <div className="text-text-primary text-xs font-semibold">{h.ticker}</div>
                         <div className="text-text-secondary text-[10px] mt-0.5">
-                          {h.quantity} shares · ₹{h.buy_price}
+                          {h.quantity} shares · ${h.buy_price}
                         </div>
                       </div>
                       <button
