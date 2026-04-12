@@ -122,3 +122,74 @@ Open `http://localhost:5173`
 ## License
 
 MIT License
+
+
+## Screenshots
+
+### Overview Dashboard
+Get a bird's-eye view of your entire portfolio — total invested, current value, returns, volatility, Sharpe ratio, max drawdown, asset allocation donut chart, and a live portfolio value chart against your cost basis.
+
+![Overview Dashboard](assets/screenshots/overview.png)
+
+---
+
+### Holdings
+A detailed per-stock breakdown across 12 positions. Columns include quantity, buy price, current price, invested amount, current value, gain/loss, return %, volatility, Sharpe ratio, and max drawdown — all in a clean sortable table.
+
+![Holdings](assets/screenshots/holdings.png)
+
+---
+
+### Risk & Correlation
+An interactive correlation matrix across all holdings with colour-coded intensity (blue = low, red = high). The right panel shows a diversification score (75 — Well Diversified), average pairwise correlation, and concentration breakdown.
+
+![Risk & Correlation](assets/screenshots/risk_correlation.png)
+
+---
+
+### Benchmark Comparison
+Rebase your portfolio against Nifty 50, S&P 500, or NASDAQ over 1M / 3M / 6M / 1Y windows. Displays portfolio vs benchmark performance and alpha generated.
+
+![Benchmark Comparison](assets/screenshots/benchmark.png)
+
+---
+
+### Monte Carlo Simulation — Paths
+1,000 simulated price paths over 252 trading days visualised as bull (green), base (orange), and bear (red) scenario lines with an interactive cursor tooltip.
+
+![Monte Carlo Simulation](assets/screenshots/simulation_paths.png)
+
+---
+
+### Monte Carlo Simulation — Risk Metrics
+Below the simulation chart: Value at Risk at 95% confidence ($92.64), probability of profit (94.70%), and a risk profile classification (Moderate Risk based on annualised volatility).
+
+![Simulation Risk Metrics](assets/screenshots/simulation_metrics.png)
+
+---
+
+### Rebalancer — Target Allocation
+Set target weights for each holding using sliders. The total allocation counter updates live and locks at 100% before allowing rebalancing to be calculated.
+
+![Rebalancer Target Allocation](assets/screenshots/rebalancer_sliders.png)
+
+---
+
+### Rebalancer — Trade Suggestions
+After calculating, the rebalancer outputs exact buy/sell instructions per stock — dollar amount, share count, and the allocation shift — so you know precisely what trades to execute.
+
+![Rebalancer Trade Suggestions](assets/screenshots/rebalancer_trades.png)
+
+---
+
+### AI Insights — Portfolio Health Report
+One-click AI-generated portfolio health report powered by LLaMA 3.3 70B via Groq. Returns an overall score (85 — Good), a plain-English summary, flagged risk factors, and actionable suggestions.
+
+![AI Portfolio Health Report](assets/screenshots/ai_health_report.png)
+
+---
+
+### AI Insights — FinBERT Sentiment Analysis
+Per-stock news sentiment analysis using FinBERT. Pulls live headlines via NewsAPI and scores each holding — positive, neutral, or negative — with source headlines displayed inline.
+
+![FinBERT Sentiment Analysis](assets/screenshots/ai_sentiment.png)
